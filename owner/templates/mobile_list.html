@@ -1,0 +1,46 @@
+{%extends 'base.html'%}
+{%block body_block%}
+
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-12">
+            <table class="table">
+
+                <tr>
+                    <th></th>
+                    <th>Mobile Name</th>
+                    <th>price</th>
+                    <th>RAM/ROM</th>
+                    <th>processor</th>
+                    <th>Rear camera</th>
+                    <th>front Camera</th>
+                    <th>Battery</th>
+                    <th>display</th>
+                    <th>stock</th>
+
+                </tr>
+                {%for mobile in mobiles%}
+                <tr>
+                    <td><img src="{{mobile.image.url}}" height="100px" width="100px"></td>
+                    <td>{{mobile.mobile_name}}</td>
+                    <td>{{mobile.price}}</td>
+                    <td>{{mobile.RAM_ROM}}</td>
+                    <td>{{mobile.processor}}</td>
+                    <td>{{mobile.rear_camera}}</td>
+                    <td>{{mobile.front_camera}}</td>
+                    <td>{{mobile.battery}}</td>
+                    <td>{{mobile.display}}</td>
+                    <td>{{mobile.stock}}</td>
+
+                    <td><a href="{%url 'mobile_detail' mobile.id%}" class="btn btn-info">View</a></td>
+                    <td><a href="{%url 'edit_mobile' mobile.id%}" class="btn btn-warning">Edit</a></td>
+                    <td><a href="{%url 'delete_mobile' mobile.id%}" class="btn btn-danger">delete</a></td>
+                    {%endfor%}
+                </tr>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+{%endblock%}

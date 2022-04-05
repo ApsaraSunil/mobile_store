@@ -1,0 +1,47 @@
+{%extends 'cust_base.html'%}
+
+{%block body_block%}
+
+
+<div class="row mt-5">
+    {%for order in orders%}
+    <div class="col-6">
+        <div class="card mb-3" style="max-width: 520px;">
+            <div class="row g-0">
+                <div class="col-md-3">
+                    {%if order.product.image%}
+                    <img src="{{order.product.image.url}}" class="img-fluid rounded-start" alt="...">
+                    {%endif%}
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{order.product.mobile_name}}</h5>
+                        <h6 class="card-title">{{order.product.price}}</h6><br>
+                        <p class="card-text">{{order.date}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-3"><br><br>
+        {{order.status}}
+    </div>
+
+    <div class="col-3"><br><br>
+
+        {%if order.status != "order_cancelled" %}
+
+        <a href="{%url 'cancel_order' order.id%}" class="btn btn-danger">Cancel</a>
+
+        {%endif%}
+
+    </div>
+
+    {%endfor%}
+
+</div>
+
+
+{%endblock%}
+
+

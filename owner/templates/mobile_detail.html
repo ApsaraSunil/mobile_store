@@ -1,0 +1,36 @@
+{%extends 'base.html'%}
+
+{%block body_block%}
+
+<div class="row mt-3 mb-5">
+    <div class="col-3"></div>
+    <div class="col-6">
+        <div class="card" style="width: 18rem;">
+
+
+            {%if mobile.image%}
+
+            <img src="{{mobile.image.url}}" class="card-img-top" height="250px">
+
+            {%endif%}
+
+            <div class="card-body" align="center">
+
+                <h5 class="card-title">{{mobile.mobile_name}}</h5>
+                <h6 class="card-subtitle mb-2">{{mobile.price}}</h6>
+                <p class="card-text text-muted">RAM/ROM: {{mobile.RAM_ROM}}</p>
+                <p class="card-text text-muted">Processor: {{mobile.processor}}</p>
+                <p class="card-text text-muted">rear camera: {{mobile.rear_camera}}</p>
+                <p class="card-text text-muted">front camera: {{mobile.front_camera}}</p>
+                <p class="card-text text-muted">battery: {{mobile.battery}}</p>
+                <p class="card-text text-muted">display: {{mobile.display}}</p>
+                <p class="card-text text-muted">stock: {{mobile.stock}}</p>
+                <a href="{%url 'list_mobiles'%}" class="btn btn-info">Back</a>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-3"></div>
+</div>
+
+{%endblock%}
