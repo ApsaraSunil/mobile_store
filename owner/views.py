@@ -1,34 +1,16 @@
 from django.shortcuts import render, redirect
-from django.views.generic import View, ListView, DetailView, DeleteView, UpdateView, CreateView
+from django.views.generic import View, ListView, DetailView, DeleteView, UpdateView, CreateView, TemplateView
 from owner.forms import MobileForm, LoginForm
 from owner.models import Mobiles
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse_lazy
 from owner.decorators import admin_sign_in_required
 from django.utils.decorators import method_decorator
+from customer.models import Orders
 
 
 # Create your views here.
 
-
-# class SigninView(View):
-#     def get(self, request, *args, **kwargs):
-#         form = LoginForm
-#         return render(request, "signin.html", {"form": form})
-#
-#     def post(self, request, *args, **kwargs):
-#         form = LoginForm(request.POST)
-#         if form.is_valid():
-#             username = form.cleaned_data.get("username")
-#             password = form.cleaned_data.get("password")
-#             user = authenticate(request, username=username, password=password)
-#             if user:
-#                 print("login success")
-#                 login(request, user)
-#                 return redirect("list_mobiles")
-#             else:
-#                 print("login failed")
-#                 return render(request, "signin.html", {"form": form})
 
 @method_decorator(admin_sign_in_required, name="dispatch")
 class AddMobileView(CreateView):
@@ -69,7 +51,23 @@ class MobileDeleteView(DeleteView):
     success_url = reverse_lazy("list_mobiles")
 
 
-@admin_sign_in_required
-def signout(request, *args, **kwargs):
+@method_decorator(admin_sign_in_required, name="dispatch")
+class DashBoardView(TemplateView):
+    template_name = "dashboard.html"
+
+    def get(self, request, *args, **kwargs):
+        new_orders = Orders.objects.filter(status="orderplaced")
+        return render(request, self.template_name, {"new_orders": new_orders})
+
+
+@method_decorator(admin_sign_in_required, name="dispatch")
+class OrderDetailView(DetailView):
+    model = Orders
+    template_name = "order_detail.html"
+    context_object_name = "order"
+    pk_url_kwarg = "id"
+
+
+def signout(request):
     logout(request)
     return redirect("signin")

@@ -19,7 +19,7 @@ class SignupView(CreateView):
     model = User
     form_class = UserRegistrationForm
     template_name = "signup.html"
-    success_url = reverse_lazy("signin.html")
+    success_url = reverse_lazy("signin")
 
 
 class SigninView(View):

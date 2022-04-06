@@ -8,6 +8,8 @@ urlpatterns = [
     path("mobile/<int:pk>", views.MobileDetailView.as_view(), name="mobile_detail"),
     path("mobile/delete/<int:id>", views.MobileDeleteView.as_view(), name="delete_mobile"),
     path("mobile/edit/<int:id>", views.MobileEditView.as_view(), name="edit_mobile"),
+    path("dashboard", views.DashBoardView.as_view(), name="dashboard"),
+    path("orders/detail/<int:id>", views.OrderDetailView.as_view(), name="order_detail"),
     path("logout", views.signout, name="logout")
 
 ]
