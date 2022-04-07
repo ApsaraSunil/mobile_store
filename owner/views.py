@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View, ListView, DetailView, DeleteView, UpdateView, CreateView, TemplateView
-from owner.forms import MobileForm, LoginForm
+from owner.forms import MobileForm, OrderEditForm
 from owner.models import Mobiles
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse_lazy
 from owner.decorators import admin_sign_in_required
 from django.utils.decorators import method_decorator
 from customer.models import Orders
+from django.core.mail import send_mail
 
 
 # Create your views here.
@@ -68,6 +69,31 @@ class OrderDetailView(DetailView):
     pk_url_kwarg = "id"
 
 
-def signout(request):
+@method_decorator(admin_sign_in_required, name="dispatch")
+class OrderEditView(UpdateView):
+    model = Orders
+    template_name = "order_edit.html"
+    form_class = OrderEditForm
+    pk_url_kwarg = "id"
+    success_url = reverse_lazy("order_detail")
+
+    def post(self, request, *args, **kwargs):
+        order = Orders.objects.get(id=kwargs["id"])
+        form = OrderEditForm(request.POST, instance=order)
+        if form.is_valid():
+            form.save()
+            expected_delivery_date = form.cleaned_data.get("expected_delivery_date")
+            send_mail(
+                'Order notification',
+                'Your order will be delivered on ' + str(expected_delivery_date),
+                'apsarasunil333@gmail.com',
+                ['aravindsunil94@gmail.com'],
+                fail_silently=False,
+            )
+            return redirect("dashboard")
+
+
+@admin_sign_in_required
+def signout(request, *args, **kwargs):
     logout(request)
     return redirect("signin")

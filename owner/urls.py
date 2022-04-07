@@ -10,6 +10,7 @@ urlpatterns = [
     path("mobile/edit/<int:id>", views.MobileEditView.as_view(), name="edit_mobile"),
     path("dashboard", views.DashBoardView.as_view(), name="dashboard"),
     path("orders/detail/<int:id>", views.OrderDetailView.as_view(), name="order_detail"),
+    path("order/edit/<int:id>", views.OrderEditView.as_view(), name="order_edit"),
     path("logout", views.signout, name="logout")
 
 ]
