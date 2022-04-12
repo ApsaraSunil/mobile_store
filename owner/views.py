@@ -77,12 +77,16 @@ class OrderEditView(UpdateView):
     pk_url_kwarg = "id"
     success_url = reverse_lazy("order_detail")
 
+    def get(self, request, *args, **kwargs):
+        order = Orders.objects.get(id=kwargs["id"])
+        return render(request, self.template_name, {"order": order, "form": self.form_class})
+
     def post(self, request, *args, **kwargs):
         order = Orders.objects.get(id=kwargs["id"])
         form = OrderEditForm(request.POST, instance=order)
         if form.is_valid():
-            form.save()
             expected_delivery_date = form.cleaned_data.get("expected_delivery_date")
+            form.save()
             send_mail(
                 'Order notification',
                 'Your order will be delivered on ' + str(expected_delivery_date),

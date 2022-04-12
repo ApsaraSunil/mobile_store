@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from customer.models import Orders, Profile
+from customer.models import Orders, Profile, FeedBack
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -53,6 +53,20 @@ class OrderForm(forms.ModelForm):
         fields = ["address"]
         widgets = {
             "address": forms.Textarea(attrs={"class": "form-control"})
+        }
+
+
+class FeedBackForm(forms.ModelForm):
+    class Meta:
+        model = FeedBack
+        fields = [
+            "comment",
+            "rating"
+        ]
+        widgets = {
+            "comment": forms.Textarea(attrs={"class": "form-control"}),
+            "rating": forms.Select(attrs={"class": "form-select"})
+
         }
 
 

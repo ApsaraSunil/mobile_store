@@ -25,14 +25,17 @@
     </div>
     <div class="col-3"><br><br>
         {{order.status}}
+        {%if order.status == "delivered"%}
+        <a href="{%url 'feedback' order.product.id%}" class="btn btn-info">FeedBack</a>
+        {%endif%}
     </div>
 
     <div class="col-3"><br><br>
 
-        {%if order.status != "order_cancelled" %}
-
+        {%if order.status != "order_cancelled"%}
+        {%if order.status != "delivered"%}
         <a href="{%url 'cancel_order' order.id%}" class="btn btn-danger">Cancel</a>
-
+        {%endif%}
         {%endif%}
 
     </div>

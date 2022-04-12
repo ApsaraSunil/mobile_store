@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from owner.models import Mobiles
 from django.views.generic import View, CreateView, ListView, DetailView, TemplateView
-from customer.forms import UserRegistrationForm, LoginForm, PasswordResetForm, OrderForm, ProfileForm
+from customer.forms import UserRegistrationForm, LoginForm, PasswordResetForm, OrderForm, ProfileForm, FeedBackForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
-from customer.models import Cart, Orders, Profile
+from customer.models import Cart, Orders, Profile, FeedBack
 from customer.decorators import sign_in_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
@@ -152,7 +152,7 @@ class OrderListView(ListView):
     context_object_name = "orders"
 
     def get_queryset(self):
-        return Orders.objects.filter(user=self.request.user).order_by("-date")
+        return Orders.objects.filter(user=self.request.user).exclude(status="order_cancelled").order_by("-date")
 
 
 @sign_in_required
@@ -161,8 +161,28 @@ def cancel_order(request, *args, **kwargs):
     order = Orders.objects.get(id=o_id)
     order.status = "order_cancelled"
     order.save()
-    messages.success(request, "your order is cancelled")
+    messages.success(request, "your order has been cancelled")
     return redirect("cust_home")
+
+
+@method_decorator(sign_in_required, name="dispatch")
+class FeedbackView(CreateView):
+    model = FeedBack
+    template_name = "post_review.html"
+    form_class = FeedBackForm
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.posted_by = self.request.user
+            product = Mobiles.objects.get(id=kwargs["id"])
+            review.product = product
+            review.save()
+            messages.success(request, "thank you for your review")
+            return redirect("cust_home")
+        else:
+            return redirect(request, self.template_name, {"form": form})
 
 
 @method_decorator(sign_in_required, name="dispatch")
@@ -180,7 +200,6 @@ class ProfileView(CreateView):
             return redirect("cust_home")
         else:
             return render(request, self.template_name, {"form": form})
-
 
 
 @method_decorator(sign_in_required, name="dispatch")
