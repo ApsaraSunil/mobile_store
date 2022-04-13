@@ -1,5 +1,4 @@
 from django.db import models
-
 # Create your models here.
 
 
@@ -17,3 +16,7 @@ class Mobiles(models.Model):
 
     def __str__(self):
         return self.mobile_name
+
+    @property
+    def m_reviews(self):
+        return self.reviews.all()

@@ -39,7 +39,7 @@ class Orders(models.Model):
 class FeedBack(models.Model):
     posted_by = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.CharField(max_length=120)
-    product = models.ForeignKey(Mobiles, on_delete=models.CASCADE, related_name="products")
+    product = models.ForeignKey(Mobiles, on_delete=models.CASCADE, related_name="reviews")
     options = (
         ("1", "1"),
         ("1.5", "1.5"),
