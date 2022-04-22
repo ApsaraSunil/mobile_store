@@ -74,3 +74,9 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         exclude = ("user", )
+        widgets = {
+            "phone_no": forms.NumberInput(attrs={"class": "form-control"}),
+            "address": forms.Textarea(attrs={"class": "form-control"}),
+            "profile_pic": forms.FileInput(attrs={"class": "form-control"})
+
+        }

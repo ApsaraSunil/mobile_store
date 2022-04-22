@@ -16,6 +16,7 @@ urlpatterns = [
     path("order/cancel/<int:id>", views.cancel_order, name="cancel_order"),
     path("profile/add", views.ProfileView.as_view(), name="profile"),
     path("my_profile", views.MyProfileView.as_view(), name="my_profile"),
+    path("edit/profile/<int:id>", views.ProfileEdit.as_view(), name="edit_profile"),
     path("orders/feedback/add/<int:id>", views.FeedbackView.as_view(), name="feedback"),
     path("accounts/logout", views.signout, name="signout")
 

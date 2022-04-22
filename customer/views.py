@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from owner.models import Mobiles
-from django.views.generic import View, CreateView, ListView, DetailView, TemplateView
+from django.views.generic import View, CreateView, ListView, DetailView, TemplateView, UpdateView
 from customer.forms import UserRegistrationForm, LoginForm, PasswordResetForm, OrderForm, ProfileForm, FeedBackForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -205,6 +205,14 @@ class ProfileView(CreateView):
 @method_decorator(sign_in_required, name="dispatch")
 class MyProfileView(TemplateView):
     template_name = "my_profile.html"
+
+
+class ProfileEdit(UpdateView):
+    model = Mobiles
+    form_class = ProfileForm
+    template_name = "edit_profile.html"
+    pk_url_kwarg = "id"
+    success_url = reverse_lazy("my_profile")
 
 
 @sign_in_required
