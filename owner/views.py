@@ -33,6 +33,7 @@ class MobileDetailView(DetailView):
     model = Mobiles
     template_name = "mobile_detail.html"
     context_object_name = "mobile"
+    pk_url_kwarg = "id"
 
 
 @method_decorator(admin_sign_in_required, name="dispatch")

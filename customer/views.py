@@ -77,7 +77,7 @@ class CustomerIndex(ListView):
 
 
 @method_decorator(sign_in_required, name="dispatch")
-class MobileDetailView(DetailView):
+class MobileDetailViews(DetailView):
     model = Mobiles
     template_name = "detail_view.html"
     context_object_name = "mobile"
