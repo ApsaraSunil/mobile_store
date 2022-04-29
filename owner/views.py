@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import View, ListView, DetailView, DeleteView, UpdateView, CreateView, TemplateView
 from owner.forms import MobileForm, OrderEditForm
 from owner.models import Mobiles
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import logout
 from django.urls import reverse_lazy
 from owner.decorators import admin_sign_in_required
 from django.utils.decorators import method_decorator

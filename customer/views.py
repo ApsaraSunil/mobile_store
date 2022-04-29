@@ -10,6 +10,7 @@ from customer.decorators import sign_in_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.db.models import Sum
+from customer.filters import MobileFilter
 
 
 # Create your views here.
@@ -71,9 +72,17 @@ class PasswordResetView(View):
 
 @method_decorator(sign_in_required, name="dispatch")
 class CustomerIndex(ListView):
-    model = Mobiles
-    template_name = "cust_home.html"
-    context_object_name = "mobiles"
+    # model = Mobiles
+    # template_name = "cust_home.html"
+    # context_object_name = "mobiles"
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            qs = Mobiles.objects.all()
+            f = MobileFilter(request.GET, queryset=Mobiles.objects.all())
+            context = {"mobiles": qs, "filter": f}
+            return render(request, "cust_home.html", context)
+        else:
+            return redirect("signin")
 
 
 @method_decorator(sign_in_required, name="dispatch")
@@ -182,7 +191,7 @@ class FeedbackView(CreateView):
             messages.success(request, "thank you for your review")
             return redirect("cust_home")
         else:
-            return redirect(request, self.template_name, {"form": form})
+            return render(request, self.template_name, {"form": form})
 
 
 @method_decorator(sign_in_required, name="dispatch")

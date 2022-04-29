@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "owner",
     "customer",
     "rest_framework",
+    "django_filters",
 
 ]
 
